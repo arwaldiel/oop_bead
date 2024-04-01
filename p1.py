@@ -124,7 +124,7 @@ hotel.reservation(103, "2024-04-08")
 
 #hotel.reservation(101, "2024-04-03")
 
-class FelhasznaloiInterfesz:
+class FelhasznaloiInterface:
     def __init__(self, szalloda):
         self.szalloda = szalloda
 
@@ -161,5 +161,5 @@ class FelhasznaloiInterfesz:
         datum = input("Adja meg a lemondandó foglalás dátumát (pl. 2024-04-01): ")
         hotel.cancel(int(szobaszam), datum)
 
-interfesz = FelhasznaloiInterfesz(hotel)
-interfesz.futtat()
+interface = FelhasznaloiInterface(hotel)
+interface.futtat()
