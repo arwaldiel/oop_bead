@@ -37,32 +37,22 @@ class Szalloda:
     def reservation(self, szobaszam, datum):
         foglalas_datum = datetime.strptime(datum, '%Y-%m-%d')
         if datetime.now() < foglalas_datum: #ha legalább holnapi a dátum
-            if self.isempty():  #ha üres a foglalási lista
-                i = self.get_room(szobaszam)
-                if i == False:
+            b = False
+            for i in self.foglalasok:
+                if i.szoba.szobaszam == szobaszam and foglalas_datum == i.datum: #ha az adott szobára van foglalás az adott dátumon
+                    print("Hibás foglalás: Az adott szobára az adott napon már van foglalás!")
+                    b = True
+                    break
+            if b == False:
+                j = self.get_room(szobaszam)
+                if j == False:
                     print("Hibás foglalás: Nincs ilyen szoba!")
                 else:
-                    fogl = Foglalas(i, foglalas_datum)
+                    fogl = Foglalas(j, foglalas_datum)
                     print("Az alábbi foglalás történt:")
-                    print("Szoba:", i.szobaszam, "Ár:", i.ar, "Dátum:", datum)
+                    print("Szoba:",j.szobaszam,"Ár:",j.ar,"Dátum:",datum)
                     print()
                     self.foglalasok.append(fogl)
-            else: #ha nem üres a foglalási lista
-                for i in self.foglalasok:
-                    if i.szoba.szobaszam == szobaszam and foglalas_datum == i.datum: #ha az adott szobára van foglalás az adott dátumon
-                        print("Hibás foglalás: Az adott szobára az adott napon már van foglalás!")
-                        break
-                    else:
-                        j = self.get_room(szobaszam)
-                        if j == False:
-                            print("Hibás foglalás: Nincs ilyen szoba!")
-                        else:
-                            fogl = Foglalas(j, foglalas_datum)
-                            print("Az alábbi foglalás történt:")
-                            print("Szoba:",j.szobaszam,"Ár:",j.ar,"Dátum:",datum)
-                            print()
-                            self.foglalasok.append(fogl)
-                            break
         else:#ha mai vagy korábbi a foglalási dátum
             print("Dátumhiba: Mai vagy korábbi a dátum!")
 
@@ -78,9 +68,6 @@ class Szalloda:
         for i in self.foglalasok:
             i.print_reservations()
         print()
-
-    def isempty(self):
-        return (len(self.foglalasok) == 0)
 
     def get_room(self, szobaszam):
         for i in self.szobak:
@@ -98,15 +85,9 @@ class Foglalas(Szoba):
     def print_reservations(self):
         print("Szobaszám:",self.szoba.szobaszam,"Foglalás dátuma:",datetime.strftime(self.datum, '%Y-%m-%d'))
 
-    """def check_room_reserved(self,szobaszam,datum):
-        for i in self.foglalasok:
-            if i.szoba.szobaszam == szobaszam and datum == i.szoba.datum:
-                return True"""
-
 szoba1 = EgyagyasSzoba(101,5000)
 szoba2 = EgyagyasSzoba(102,5000)
 szoba3 = KetagyasSzoba(103,9000)
-
 
 szobalista = [szoba1, szoba2, szoba3]
 
@@ -155,11 +136,10 @@ class FelhasznaloiInterface:
         datum = input("Adja meg a foglalás dátumát (pl. 2024-04-01): ")
         hotel.reservation(int(szobaszam), datum)
 
-
     def lemondas(self):
         szobaszam = input("Adja meg a lemondandó foglalás szobaszámát: ")
         datum = input("Adja meg a lemondandó foglalás dátumát (pl. 2024-04-01): ")
         hotel.cancel(int(szobaszam), datum)
 
-interface = FelhasznaloiInterface(hotel)
+interface = FelhasznaloiInterface(Szalloda)
 interface.futtat()
