@@ -1,23 +1,31 @@
 from datetime import datetime
 from abc import ABC, abstractmethod
 
-
 class Szoba(ABC):
-    def __init__(self, szobaszam, ar):
+    def __init__(self, szobaszam):
         self.szobaszam = szobaszam
-        self.ar = ar
 
     @abstractmethod
     def szoba_tipus(self):
         pass
 
 class EgyagyasSzoba(Szoba):
+    def __init__(self, szobaszam):
+        super().__init__(szobaszam)
+        self.ar = 5000
+
     def szoba_tipus(self):
-        return self
+        return "Egyágyas Szoba"
+
 
 class KetagyasSzoba(Szoba):
+
+    def __init__(self, szobaszam):
+        super().__init__(szobaszam)
+        self.ar = 9000
+
     def szoba_tipus(self):
-        return self
+        return "Kétágyas Szoba"
 
 class Szalloda:
     def __init__(self, nev):
@@ -85,9 +93,9 @@ class Foglalas(Szoba):
     def print_reservations(self):
         print("Szobaszám:",self.szoba.szobaszam,"Foglalás dátuma:",datetime.strftime(self.datum, '%Y-%m-%d'))
 
-szoba1 = EgyagyasSzoba(101,5000)
-szoba2 = EgyagyasSzoba(102,5000)
-szoba3 = KetagyasSzoba(103,9000)
+szoba1 = EgyagyasSzoba(101)
+szoba2 = EgyagyasSzoba(102)
+szoba3 = KetagyasSzoba(103)
 
 szobalista = [szoba1, szoba2, szoba3]
 
@@ -124,7 +132,7 @@ class FelhasznaloiInterface:
             elif valasztas == "2":
                 self.lemondas()
             elif valasztas == "3":
-                hotel.list_reservations()
+                self.szalloda.list_reservations()
             elif valasztas == "0":
                 print("Kilépés...")
                 break
@@ -134,12 +142,12 @@ class FelhasznaloiInterface:
     def foglalas(self):
         szobaszam = input("Adja meg a foglalandó szoba számát: ")
         datum = input("Adja meg a foglalás dátumát (pl. 2024-04-01): ")
-        hotel.reservation(int(szobaszam), datum)
+        self.szalloda.reservation(int(szobaszam), datum)
 
     def lemondas(self):
         szobaszam = input("Adja meg a lemondandó foglalás szobaszámát: ")
         datum = input("Adja meg a lemondandó foglalás dátumát (pl. 2024-04-01): ")
-        hotel.cancel(int(szobaszam), datum)
+        self.szalloda.cancel(int(szobaszam), datum)
 
-interface = FelhasznaloiInterface(Szalloda)
+interface = FelhasznaloiInterface(hotel)
 interface.futtat()
