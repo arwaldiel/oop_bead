@@ -105,11 +105,11 @@ for szoba in szobalista:
 
 #hotel.show_rooms()
 
-hotel.reservation(101, "2024-04-03")
-hotel.reservation(101, "2024-04-05")
-hotel.reservation(102, "2024-04-04")
-hotel.reservation(103, "2024-04-06")
-hotel.reservation(103, "2024-04-08")
+hotel.reservation(101, "2025-04-03")
+hotel.reservation(101, "2025-04-05")
+hotel.reservation(102, "2025-04-04")
+hotel.reservation(103, "2025-04-06")
+hotel.reservation(103, "2025-04-08")
 
 #hotel.reservation(101, "2024-04-03")
 
